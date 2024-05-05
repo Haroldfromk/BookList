@@ -11,16 +11,16 @@ import SnapKit
 class ResultTableViewCell: UITableViewCell {
     
     let titleLabel = TextLabel().makeLabel(value: "Title")
-    let priceLabel = TextLabel().makeLabel(value: "Price")
+    let priceLabel = TextLabel().makeCenterLabel(value: "Price")
     
     private lazy var hStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
             titleLabel,
-            priceLabel,
-            UIView()
+            priceLabel
         ])
         stackView.axis = .horizontal
         stackView.alignment = .center
+        stackView.spacing = 20
         return stackView
     }()
     
@@ -52,15 +52,16 @@ class ResultTableViewCell: UITableViewCell {
         
         titleLabel.snp.makeConstraints { make in
             make.leading.equalTo(hStackView.snp.leading)
-            make.top.equalTo(hStackView.snp.top).offset(10)
-            make.bottom.equalTo(hStackView.snp.bottom).offset(-10)
+            make.top.equalTo(hStackView.snp.top)
+            make.bottom.equalTo(hStackView.snp.bottom)
+            make.trailing.equalTo(priceLabel.snp.leading).offset(-20)
+            make.width.equalTo(250)
         }
         
         priceLabel.snp.makeConstraints { make in
-            make.leading.equalTo(titleLabel.snp.trailing)
-            make.trailing.equalTo(hStackView.snp.trailing).offset(-10)
-            make.top.equalTo(hStackView.snp.top).offset(10)
-            make.bottom.equalTo(hStackView.snp.bottom).offset(-10)
+            make.trailing.equalTo(hStackView.snp.trailing)
+            make.top.equalTo(hStackView.snp.top)
+            make.bottom.equalTo(hStackView.snp.bottom)
         }
     }
 

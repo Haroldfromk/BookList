@@ -17,7 +17,8 @@ class ResultView: UIView {
         tableView.backgroundColor = .systemBackground
         tableView.allowsSelection = false
         tableView.register(ResultTableViewCell.self, forCellReuseIdentifier: Constants.tableViewCellIdentifier)
-        
+        tableView.allowsSelection = true
+        tableView.rowHeight = 80
         return tableView
     }()
     

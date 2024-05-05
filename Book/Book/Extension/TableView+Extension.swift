@@ -7,18 +7,18 @@
 
 import Foundation
 import UIKit
+import Kingfisher
 
-extension ViewController: UITableViewDelegate, UITableViewDataSource {
+extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     
     func setUp() {
         resultView.tableView.delegate = self
         resultView.tableView.dataSource = self
-        resultView.tableView.reloadData()
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        return tableViewList.count
+        return bookVM.document.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -26,11 +26,27 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
             return UITableViewCell()
         }
         
-        let item = tableViewList[indexPath.row]
+        let item = bookVM.document[indexPath.row]
+        cell.isUserInteractionEnabled = true
+        cell.selectionStyle = .none
         cell.titleLabel.text = item.title
         cell.priceLabel.text = String(item.price)
-        
         return cell
     }
-
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print(indexPath.row)
+        
+        let detailVC = DetailViewController()
+        let item = bookVM.document[indexPath.row]
+        let imageURL = URL(string: item.thumbnail)
+        
+        detailVC.titleView.titleLabel.text = item.title
+        detailVC.titleView.authorLabel.text = item.authors[0]
+        detailVC.imageView.imageView.kf.setImage(with: imageURL)
+        detailVC.imageView.priceLabel.text = item.price.stringValue
+        detailVC.bodyView.bodyLabel.text = item.contents
+        
+        present(detailVC, animated: true)
+    }
 }

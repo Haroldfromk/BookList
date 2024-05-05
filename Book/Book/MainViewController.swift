@@ -9,12 +9,11 @@ import UIKit
 import Combine
 import SnapKit
 
-class ViewController: UIViewController {
+class MainViewController: UIViewController {
     
     let searchView = SearchView()
     let recentView = RecentView()
     let resultView = ResultView()
-    
     
     private lazy var vStackView : UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
@@ -30,20 +29,19 @@ class ViewController: UIViewController {
     }()
     
     private var cancellables = Set<AnyCancellable>()
-    private let bookVM = BookVM()
-    
-    var tableViewList = [Document]()
+    let bookVM = BookVM()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
+        
         layout()
         setUp()
+        
         bookVM.transform(input: BookVM.Input(searchPublisher: searchView.valuePublisher))
         bookVM.$document
-            .receive(on: RunLoop.main)
-            .sink { [weak self] document in
-                self?.tableViewList = document
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
                 self?.resultView.tableView.reloadData()
             }.store(in: &cancellables)
     }

@@ -20,25 +20,33 @@ class BookVM {
     @Published var document = [Document]()
     
     func transform(input: Input) {
-
         input.searchPublisher.sink { [weak self] value in
-            self?.callRequest(query: value)
+            self?.fetchRequest(queryValue: value)
         }.store(in: &cancellables)
-        
     }
     
-    
-    func callRequest(query: String) {
+    func fetchRequest(queryValue: String) {
         
-        NetworkManager.shared.fetchRequest(queryValue: query).sink { completion in
-            switch completion {
-            case .finished:
-                print("success")
-            case .failure(let error):
-                print(error)
-            }
-        } receiveValue: { [weak self] documents in
-            self?.document = documents
-        }.store(in: &cancellables)
+        let urlString = "https://dapi.kakao.com/v3/search/book?target=title"
+        let headers = ["Authorization" : "KakaoAK \(Secret.apikey)"]
+        
+        var urlComponent = URLComponents(string: urlString)
+        urlComponent?.queryItems?.append(URLQueryItem(name: "query", value: queryValue))
+        
+        guard let url = urlComponent?.url else {
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.allHTTPHeaderFields = headers
+        let session = URLSession(configuration: .default)
+        return session.dataTaskPublisher(for: request)
+            .map(\.data)
+            .decode(type: BookModel.self, decoder: JSONDecoder())
+            .map(\.documents)
+            .replaceError(with: [])
+            .assign(to: \.document, on: self)
+            .store(in: &cancellables)
+        
     }
 }
