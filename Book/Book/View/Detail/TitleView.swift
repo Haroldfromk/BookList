@@ -10,11 +10,11 @@ import SnapKit
 
 class TitleView: UIView {
     
-    var titleLabel = TextLabel().makeLabel(textValue: "세이노의 가르침")
-    var authorLabel = TextLabel().makeCenterLabel(value: "세이노")
+    let titleLabel = TextLabel().makeLabel(textValue: "세이노의 가르침")
+    let authorLabel = TextLabel().makeCenterLabel(value: "세이노")
     
     private lazy var vStackView: UIStackView = {
-        var stackView = UIStackView(arrangedSubviews: [
+        let stackView = UIStackView(arrangedSubviews: [
         titleLabel,
         authorLabel
         ])

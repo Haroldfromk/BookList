@@ -28,8 +28,12 @@ class MainViewController: UIViewController {
         return stackView
     }()
     
-    private var cancellables = Set<AnyCancellable>()
-    let bookVM = BookVM()
+    var cancellables = Set<AnyCancellable>()
+    
+    var test = [RecentModel]()
+    
+    let searchVM = SearchVM()
+    let wishVM = WishVM()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,18 +42,31 @@ class MainViewController: UIViewController {
         layout()
         setUp()
         
-        bookVM.transform(input: BookVM.Input(searchPublisher: searchView.valuePublisher))
-        bookVM.$document
+        bind()
+    }
+    
+//    override func viewWillAppear(_ animated: Bool) {
+//        super.viewWillAppear(true)
+//        bind()
+//    }
+    
+    private func bind () {
+        searchVM.transform(input: SearchVM.Input(searchPublisher: searchView.valuePublisher))
+        searchVM.$document
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
                 self?.resultView.tableView.reloadData()
             }.store(in: &cancellables)
+        
+        wishVM.getDocumentfromCoreData()
+        wishVM.$wishDocument
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] data in
+                self?.recentView.collectionView.reloadData()
+            }.store(in: &cancellables)
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
-        resultView.tableView.reloadData()
-    }
+    
     
     private func layout() {
         view.addSubview(vStackView)
@@ -73,4 +90,3 @@ class MainViewController: UIViewController {
     }
     
 }
-

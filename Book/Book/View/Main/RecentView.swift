@@ -13,9 +13,8 @@ import SnapKit
 class RecentView: UIView {
 
     
-    private var textLabel = TextLabel().makeLabel(textValue: "최근 본 책")
-    
-    private var collectionView: UICollectionView = {
+    private let textLabel = TextLabel().makeLabel(textValue: "최근 본 책")
+    let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         

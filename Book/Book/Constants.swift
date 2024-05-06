@@ -8,6 +8,8 @@
 import Foundation
 
 struct Constants {
-    static var collectionViewCellIdentifier = "RecentCollectionViewCell"
-    static var tableViewCellIdentifier = "ResultTableViewCell"
+    
+    static let collectionViewCellIdentifier = "RecentCollectionViewCell"
+    static let tableViewCellIdentifier = "ResultTableViewCell"
+    static let wishlistCellIdentifier = "WishlistTableViewCell"
 }

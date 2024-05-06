@@ -10,17 +10,17 @@ import SnapKit
 
 class ImageView: UIView {
     
-    var imageView: UIImageView = {
-        var view = UIImageView()
+    let imageView: UIImageView = {
+        let view = UIImageView()
         view.image = UIImage(systemName: "book")
         view.contentMode = .scaleAspectFit
         return view
     }()
     
-    var priceLabel = TextLabel().makeCenterLabel(value: "가격")
+    let priceLabel = TextLabel().makeCenterLabel(value: "가격")
     
     private lazy var vStackView: UIStackView = {
-        var stackView = UIStackView(arrangedSubviews: [
+        let stackView = UIStackView(arrangedSubviews: [
             imageView,
             priceLabel
         ])

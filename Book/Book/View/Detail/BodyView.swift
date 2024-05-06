@@ -10,14 +10,14 @@ import SnapKit
 
 class BodyView: UIView {
     
-    private var scrollView: UIScrollView = {
-        var view = UIScrollView()
+    private let scrollView: UIScrollView = {
+        let view = UIScrollView()
         view.isScrollEnabled = true
         view.showsVerticalScrollIndicator = true
         return view
     }()
     
-    var bodyLabel = TextLabel().makeLabel(value: "body")
+    let bodyLabel = TextLabel().makeLabel(value: "body")
     
     override init(frame: CGRect) {
         super.init(frame: .zero)

@@ -17,18 +17,23 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
         let window = UIWindow(windowScene: windowScene)
-        let vc = MainViewController()
+        let rootVC = MainViewController()
+        let wishVC = WishlistViewController()
         self.window = window
         window.makeKeyAndVisible()
         
         let tabbarController = UITabBarController()
-        let firstVC = UINavigationController(rootViewController: vc)
+        let firstVC = UINavigationController(rootViewController: rootVC)
         
         firstVC.tabBarItem = UITabBarItem(
             title: "Search",
             image: UIImage(systemName: "magnifyingglass.circle"),
             selectedImage: UIImage(systemName: "magnifyingglass.circle.fill"))
-        tabbarController.viewControllers = [firstVC]
+        wishVC.tabBarItem = UITabBarItem(
+            title: "Wish",
+            image: UIImage(systemName: "list.bullet.circle"),
+            selectedImage: UIImage(systemName: "list.bullet.circle.fill"))
+        tabbarController.viewControllers = [firstVC,wishVC]
         tabbarController.tabBar.backgroundColor = .white
         window.rootViewController = tabbarController
         

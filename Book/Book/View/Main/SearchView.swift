@@ -19,8 +19,6 @@ class SearchView: UIView {
         return bar
     }()
     
-    private let cancelButtonPublisehr = PassthroughSubject<String, Never>()
-    
     private let searchBarSubject = PassthroughSubject<String, Never>()
     
     var valuePublisher: AnyPublisher<String, Never> {

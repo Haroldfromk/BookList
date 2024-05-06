@@ -7,9 +7,8 @@
 
 import Foundation
 import Combine
-import UIKit
 
-class BookVM {
+class SearchVM {
     
     struct Input {
         let searchPublisher: AnyPublisher<String, Never>
@@ -26,7 +25,6 @@ class BookVM {
     }
     
     func fetchRequest(queryValue: String) {
-        
         let urlString = "https://dapi.kakao.com/v3/search/book?target=title"
         let headers = ["Authorization" : "KakaoAK \(Secret.apikey)"]
         
@@ -39,7 +37,9 @@ class BookVM {
         
         var request = URLRequest(url: url)
         request.allHTTPHeaderFields = headers
+        
         let session = URLSession(configuration: .default)
+        
         return session.dataTaskPublisher(for: request)
             .map(\.data)
             .decode(type: BookModel.self, decoder: JSONDecoder())
@@ -47,6 +47,5 @@ class BookVM {
             .replaceError(with: [])
             .assign(to: \.document, on: self)
             .store(in: &cancellables)
-        
     }
 }

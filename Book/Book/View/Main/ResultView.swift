@@ -12,21 +12,21 @@ class ResultView: UIView {
     
     private let textLabel = TextLabel().makeLabel(textValue: "검색 결과")
     
-    var tableView: UITableView = {
+    let tableView: UITableView = {
         let tableView = UITableView()
         tableView.backgroundColor = .systemBackground
         tableView.allowsSelection = false
         tableView.register(ResultTableViewCell.self, forCellReuseIdentifier: Constants.tableViewCellIdentifier)
-        tableView.allowsSelection = true
+        tableView.allowsSelection = true // 셀을 선택할수있게 한다.
         tableView.rowHeight = 80
         return tableView
     }()
     
     private lazy var vStackView: UIStackView = {
-       let stackView = UIStackView(arrangedSubviews: [
-        textLabel,
-        tableView
-       ])
+        let stackView = UIStackView(arrangedSubviews: [
+            textLabel,
+            tableView
+        ])
         stackView.axis = .vertical
         stackView.spacing = 10
         stackView.alignment = .center
@@ -58,7 +58,7 @@ class ResultView: UIView {
         }
         
         tableView.snp.makeConstraints { make in
-
+            
             make.leading.equalTo(vStackView.snp.leading).offset(20)
             make.trailing.equalTo(vStackView.snp.trailing).offset(-20)
             make.bottom.equalTo(vStackView.snp.bottom)

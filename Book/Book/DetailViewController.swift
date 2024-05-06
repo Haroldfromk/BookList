@@ -60,7 +60,3 @@ class DetailViewController: UIViewController {
     }
     
 }
-
-#Preview {
-    DetailViewController()
-}

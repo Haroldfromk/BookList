@@ -1,26 +1,27 @@
 //
-//  ResultTableViewCell.swift
+//  WishlistTableViewCell.swift
 //  Book
 //
-//  Created by Dongik Song on 5/4/24.
+//  Created by Dongik Song on 5/6/24.
 //
 
 import UIKit
 import SnapKit
 
-class ResultTableViewCell: UITableViewCell {
+class WishlistTableViewCell: UITableViewCell {
     
     let titleLabel = TextLabel().makeLabel(value: "Title")
+    let authorLabel = TextLabel().makeCenterLabel(value: "세이노")
     let priceLabel = TextLabel().makeCenterLabel(value: "Price")
     
     private lazy var hStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
-            titleLabel,
-            priceLabel
+        titleLabel,
+        authorLabel,
+        priceLabel
         ])
         stackView.axis = .horizontal
-        stackView.alignment = .center
-        stackView.spacing = 20
+        stackView.spacing = 10
         return stackView
     }()
     
@@ -35,25 +36,27 @@ class ResultTableViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        // Initialization code
     }
-    
+
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-        
+
         // Configure the view for the selected state
     }
     
     override func prepareForReuse() {
-        super.prepareForReuse()
         titleLabel.text = nil
+        authorLabel.text = nil
         priceLabel.text = nil
     }
     
-    func configure(model: Document) {
-        titleLabel.text = model.title
-        priceLabel.text = model.price.stringValue
-    }
-    
+//    func configure(model: CoreadataModel) {
+//        titleLabel.text
+//        authorLabel.text
+//        priceLabel.text
+//    }
+//    
     private func layout () {
         addSubview(hStackView)
         
@@ -65,8 +68,14 @@ class ResultTableViewCell: UITableViewCell {
             make.leading.equalTo(hStackView.snp.leading)
             make.top.equalTo(hStackView.snp.top)
             make.bottom.equalTo(hStackView.snp.bottom)
-            make.trailing.equalTo(priceLabel.snp.leading).offset(-20)
+            make.trailing.equalTo(authorLabel.snp.leading).offset(-20)
             make.width.equalTo(250)
+        }
+        
+        authorLabel.snp.makeConstraints { make in
+            make.top.equalTo(hStackView.snp.top)
+            make.trailing.equalTo(priceLabel.snp.leading).offset(-20)
+            make.bottom.equalTo(hStackView.snp.bottom)
         }
         
         priceLabel.snp.makeConstraints { make in
@@ -75,5 +84,5 @@ class ResultTableViewCell: UITableViewCell {
             make.bottom.equalTo(hStackView.snp.bottom)
         }
     }
-
+    
 }

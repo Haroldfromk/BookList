@@ -10,7 +10,7 @@ import SnapKit
 
 class RecentCollectionViewCell: UICollectionViewCell {
     
-    private var imageView: UIImageView = {
+    let imageView: UIImageView = {
        let view = UIImageView()
         view.contentMode = .scaleAspectFill
         view.image = UIImage(systemName: "book")
@@ -18,6 +18,7 @@ class RecentCollectionViewCell: UICollectionViewCell {
         view.clipsToBounds = true
         return view
     }()
+    
     
     func configure(image: UIImage) {
         self.imageView.image = image

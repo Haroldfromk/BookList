@@ -6,26 +6,35 @@
 //
 
 import UIKit
+import Combine
 import SnapKit
 
 class ButtonView: UIView {
     
-    private var closeButton: UIButton = {
-        var button = UIButton ()
+    private var cancellables = Set<AnyCancellable>()
+    
+    private lazy var closeButton: UIButton = {
+        let button = UIButton ()
         button.backgroundColor = .gray
         button.setImage(UIImage(systemName: "x.circle"), for: .normal)
+        button.tapPublisher.sink { [unowned self] _ in
+            goToMainVC()
+        }.store(in: &cancellables)
         return button
     }()
     
-    private var getButton: UIButton = {
-        var button = UIButton ()
+    private lazy var getButton: UIButton = {
+        let button = UIButton ()
         button.backgroundColor = .green
         button.setImage(UIImage(systemName: "bookmark.square"), for: .normal)
+        button.tapPublisher.sink { _ in
+            
+        }.store(in: &cancellables)
         return button
     }()
     
     private lazy var hStackView: UIStackView = {
-        var stackView = UIStackView(arrangedSubviews: [
+        let stackView = UIStackView(arrangedSubviews: [
         closeButton,
         getButton,
         UIView()
@@ -42,6 +51,10 @@ class ButtonView: UIView {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func goToMainVC() {
+        childViewController?.dismiss(animated: true)
     }
     
     func layout () {
