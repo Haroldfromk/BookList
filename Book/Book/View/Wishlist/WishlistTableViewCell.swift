@@ -51,12 +51,12 @@ class WishlistTableViewCell: UITableViewCell {
         priceLabel.text = nil
     }
     
-//    func configure(model: CoreadataModel) {
-//        titleLabel.text
-//        authorLabel.text
-//        priceLabel.text
-//    }
-//    
+    func configure (model: WishListModel) {
+        titleLabel.text = model.title
+        authorLabel.text = model.author
+        priceLabel.text = model.price.stringValue
+    }
+    
     private func layout () {
         addSubview(hStackView)
         
@@ -65,21 +65,21 @@ class WishlistTableViewCell: UITableViewCell {
         }
         
         titleLabel.snp.makeConstraints { make in
-            make.leading.equalTo(hStackView.snp.leading)
+            make.leading.equalTo(hStackView.snp.leading).offset(10)
             make.top.equalTo(hStackView.snp.top)
             make.bottom.equalTo(hStackView.snp.bottom)
-            make.trailing.equalTo(authorLabel.snp.leading).offset(-20)
-            make.width.equalTo(250)
+            make.width.equalTo(150)
         }
         
         authorLabel.snp.makeConstraints { make in
             make.top.equalTo(hStackView.snp.top)
+            make.leading.equalTo(titleLabel.snp.trailing)
             make.trailing.equalTo(priceLabel.snp.leading).offset(-20)
             make.bottom.equalTo(hStackView.snp.bottom)
         }
         
         priceLabel.snp.makeConstraints { make in
-            make.trailing.equalTo(hStackView.snp.trailing)
+            make.trailing.equalTo(hStackView.snp.trailing).offset(-10)
             make.top.equalTo(hStackView.snp.top)
             make.bottom.equalTo(hStackView.snp.bottom)
         }

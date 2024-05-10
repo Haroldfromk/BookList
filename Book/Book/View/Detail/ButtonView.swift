@@ -15,8 +15,9 @@ class ButtonView: UIView {
     
     private lazy var closeButton: UIButton = {
         let button = UIButton ()
+        button.setTitle("닫기", for: .normal)
+        button.setTitleColor(.black, for: .normal)
         button.backgroundColor = .gray
-        button.setImage(UIImage(systemName: "x.circle"), for: .normal)
         button.tapPublisher.sink { [unowned self] _ in
             goToMainVC()
         }.store(in: &cancellables)
@@ -25,25 +26,40 @@ class ButtonView: UIView {
     
     private lazy var getButton: UIButton = {
         let button = UIButton ()
+        button.setTitle("담기", for: .normal)
+        button.setTitleColor(.black, for: .normal)
         button.backgroundColor = .green
-        button.setImage(UIImage(systemName: "bookmark.square"), for: .normal)
-        button.tapPublisher.sink { _ in
-            
+        button.tapPublisher.sink { [unowned self] _ in
+            let vc = childViewController as? DetailViewController
+            vc?.wishSubject.sink(receiveValue: { [unowned self] document in
+                if vc?.wishVM.checkDuplicate(title: document.title) == false {
+                    vc?.wishVM.saveDocumentToCoredata(data: document)
+                    let alert = UIAlertController(title: "담기 완료", message: "책이 담겼습니다.", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "확인", style: .default, handler: { [unowned self] _ in
+                        goToMainVC()
+                    }))
+                    vc?.present(alert, animated: true)
+                } else {
+                    let alert = UIAlertController(title: "중복 확인", message: "이미 리스트에 등록된 책입니다.", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "확인", style: .default))
+                    vc?.present(alert, animated: true)
+                }
+                
+            }).cancel()
         }.store(in: &cancellables)
         return button
     }()
     
     private lazy var hStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
-        closeButton,
-        getButton,
-        UIView()
+            closeButton,
+            getButton
         ])
         stackView.axis = .horizontal
-        stackView.spacing = 25
+        stackView.distribution = .fillEqually
         return stackView
     }()
-
+    
     override init(frame: CGRect) {
         super.init(frame: .zero)
         layout()
@@ -62,21 +78,6 @@ class ButtonView: UIView {
         
         hStackView.snp.makeConstraints { make in
             make.leading.trailing.bottom.top.equalToSuperview()
-        }
-        
-        closeButton.snp.makeConstraints { make in
-            make.top.equalTo(hStackView.snp.top).offset(10)
-            make.leading.equalTo(hStackView.snp.leading).offset(10)
-            make.bottom.equalTo(hStackView.snp.bottom).offset(-10)
-            make.width.equalTo(90)
-        }
-        
-        getButton.snp.makeConstraints { make in
-            make.top.equalTo(hStackView.snp.top).offset(10)
-            make.leading.equalTo(closeButton.snp.trailing).offset(25)
-            make.trailing.equalTo(hStackView.snp.trailing).offset(-10)
-            make.bottom.equalTo(hStackView.snp.bottom).offset(-10)
-            make.width.equalTo(250)
         }
         
     }

@@ -30,49 +30,65 @@ class MainViewController: UIViewController {
     
     var cancellables = Set<AnyCancellable>()
     
-    var test = [RecentModel]()
-    
     let searchVM = SearchVM()
+    let recentVM = RecentVM()
     let wishVM = WishVM()
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         
         layout()
-        setUp()
+        tableSetUp()
+        collectionSetUp()
         
         bind()
+        checkEmpty()
+
     }
     
-//    override func viewWillAppear(_ animated: Bool) {
-//        super.viewWillAppear(true)
-//        bind()
-//    }
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        bind()
+        checkEmpty()
+    }
+    
+    private func checkEmpty() {
+        if recentVM.recentDocument.isEmpty {
+            recentView.collectionView.isHidden = true
+        } else {
+            recentView.collectionView.isHidden = false
+        }
+    }
     
     private func bind () {
-        searchVM.transform(input: SearchVM.Input(searchPublisher: searchView.valuePublisher))
+
+        searchVM.transform(input: SearchVM.Input(searchPublisher: searchView.valuePublisher, numberPublisher: searchVM.valuePublisher))
         searchVM.$document
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
                 self?.resultView.tableView.reloadData()
-            }.store(in: &cancellables)
+            }
+            .store(in: &cancellables)
         
-        wishVM.getDocumentfromCoreData()
-        wishVM.$wishDocument
+        searchVM.numberSubject.send(1)
+        
+        recentVM.getDocumentfromCoreData()
+        recentVM.$recentDocument
             .receive(on: DispatchQueue.main)
             .sink { [weak self] data in
                 self?.recentView.collectionView.reloadData()
             }.store(in: &cancellables)
+
     }
-    
-    
     
     private func layout() {
         view.addSubview(vStackView)
         
         vStackView.snp.makeConstraints { make in
-            make.top.equalTo(view.snp.top).offset(100)
+            make.top.equalTo(view.snp.top).offset(80)
             make.leading.trailing.bottom.equalToSuperview()
         }
         
@@ -81,7 +97,7 @@ class MainViewController: UIViewController {
         }
         
         recentView.snp.makeConstraints { make in
-            make.height.equalTo(180)
+            make.height.equalTo(240)
         }
         
         resultView.snp.makeConstraints { make in

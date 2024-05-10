@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import Combine
 
 class DetailViewController: UIViewController {
 
@@ -29,17 +30,24 @@ class DetailViewController: UIViewController {
         return stackView
     }()
     
+    private var cancellables = Set<AnyCancellable>()
+    var wishSubject = CurrentValueSubject<Document, Never>(.init(authors: [], contents: "", price: 0, title: "", thumbnail: ""))
+
+    let wishVM = WishVM()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         layout()
+        print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
     }
     
     private func layout() {
         view.addSubview(vStackView)
         
         vStackView.snp.makeConstraints { make in
-            make.top.leading.trailing.bottom.equalToSuperview()
+            make.top.equalTo(view.snp.top).offset(80)
+            make.leading.trailing.bottom.equalToSuperview()
         }
         
         titleView.snp.makeConstraints { make in
@@ -47,7 +55,7 @@ class DetailViewController: UIViewController {
         }
         
         imageView.snp.makeConstraints { make in
-            make.height.equalTo(350)
+            make.height.equalTo(300)
         }
         
         bodyView.snp.makeConstraints { make in

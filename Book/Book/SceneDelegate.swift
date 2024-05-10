@@ -23,9 +23,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window.makeKeyAndVisible()
         
         let tabbarController = UITabBarController()
-        let firstVC = UINavigationController(rootViewController: rootVC)
         
-        firstVC.tabBarItem = UITabBarItem(
+        rootVC.tabBarItem = UITabBarItem(
             title: "Search",
             image: UIImage(systemName: "magnifyingglass.circle"),
             selectedImage: UIImage(systemName: "magnifyingglass.circle.fill"))
@@ -33,7 +32,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             title: "Wish",
             image: UIImage(systemName: "list.bullet.circle"),
             selectedImage: UIImage(systemName: "list.bullet.circle.fill"))
-        tabbarController.viewControllers = [firstVC,wishVC]
+        tabbarController.viewControllers = [rootVC,wishVC]
         tabbarController.tabBar.backgroundColor = .white
         window.rootViewController = tabbarController
         

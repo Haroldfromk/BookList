@@ -25,7 +25,6 @@ class ImageView: UIView {
             priceLabel
         ])
         stackView.axis = .vertical
-        stackView.spacing = 10
         return stackView
     }()
     
@@ -49,14 +48,14 @@ class ImageView: UIView {
             make.top.equalTo(vStackView.snp.top).offset(10)
             make.leading.equalTo(vStackView.snp.leading).offset(10)
             make.trailing.equalTo(vStackView.snp.trailing).offset(-10)
-            make.height.equalTo(250)
+            make.height.equalToSuperview().multipliedBy(0.7)
         }
         
         priceLabel.snp.makeConstraints { make in
             make.top.equalTo(imageView.snp.bottom).offset(10)
             make.leading.equalTo(vStackView.snp.leading).offset(10)
             make.trailing.equalTo(vStackView.snp.trailing).offset(-10)
-            make.height.equalTo(50)
+            make.height.equalToSuperview().multipliedBy(0.3)
         }
     }
     

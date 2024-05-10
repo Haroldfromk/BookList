@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import Combine
 
 class ResultView: UIView {
     
@@ -15,9 +16,8 @@ class ResultView: UIView {
     let tableView: UITableView = {
         let tableView = UITableView()
         tableView.backgroundColor = .systemBackground
-        tableView.allowsSelection = false
         tableView.register(ResultTableViewCell.self, forCellReuseIdentifier: Constants.tableViewCellIdentifier)
-        tableView.allowsSelection = true // 셀을 선택할수있게 한다.
+        //tableView.allowsSelection = true // 셀을 선택할수있게 한다.
         tableView.rowHeight = 80
         return tableView
     }()

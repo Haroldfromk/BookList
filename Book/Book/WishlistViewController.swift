@@ -7,14 +7,16 @@
 
 import UIKit
 import SnapKit
+import Combine
 
 class WishlistViewController: UIViewController {
+    
     
     private let headerView = HeaderView()
     let bodyTableView = BodyTableView()
     
     private lazy var vStackView: UIStackView = {
-        var stackView = UIStackView(arrangedSubviews: [
+        let stackView = UIStackView(arrangedSubviews: [
             headerView,
             bodyTableView,
             UIView()
@@ -24,12 +26,38 @@ class WishlistViewController: UIViewController {
         return stackView
     }()
     
+    private var cancellables = Set<AnyCancellable>()
+    let wishVM = WishVM()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         
         setUp()
         layout()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        bind()
+    }
+    
+    private func bind () {
+        wishVM.getDocumentfromCoreData()
+        wishVM.$wishDocument
+            .receive(on: DispatchQueue.main)
+            .sink { [unowned self] _ in
+                self.bodyTableView.tableView.reloadData()
+            }.store(in: &cancellables)
+        
+        wishVM.routerSubject.sink { alert in
+            switch alert {
+            case .alert(let title, let message) :
+                let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "확인", style: .default))
+                self.present(alert, animated: true)
+            }
+        }.store(in: &cancellables)
     }
     
     private func layout () {

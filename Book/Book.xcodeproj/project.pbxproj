@@ -8,10 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		6102A4272BE8D72700307A6C /* CoreModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 6102A4252BE8D72700307A6C /* CoreModel.xcdatamodeld */; };
+		6102A4292BE963FB00307A6C /* CollectionView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6102A4282BE963FB00307A6C /* CollectionView+Extension.swift */; };
 		6150AC6B2BE8B3510007201B /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6150AC6A2BE8B3510007201B /* HeaderView.swift */; };
 		6150AC6D2BE8B36D0007201B /* BodyTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6150AC6C2BE8B36D0007201B /* BodyTableView.swift */; };
 		6150AC6F2BE8BC140007201B /* WishlistTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6150AC6E2BE8BC140007201B /* WishlistTableViewCell.swift */; };
-		6150AC712BE8BEB60007201B /* WishVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6150AC702BE8BEB60007201B /* WishVM.swift */; };
+		6150AC712BE8BEB60007201B /* RecentVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6150AC702BE8BEB60007201B /* RecentVM.swift */; };
+		61A7B9422BE9819E002E501F /* WishVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61A7B9412BE9819E002E501F /* WishVM.swift */; };
 		61E455EA2BE69F9500A4D0C7 /* BookModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61E455E92BE69F9500A4D0C7 /* BookModel.swift */; };
 		61E455ED2BE69FB700A4D0C7 /* CombineCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 61E455EC2BE69FB700A4D0C7 /* CombineCocoa */; };
 		61E455F22BE6CB4200A4D0C7 /* UITextField+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61E455F12BE6CB4200A4D0C7 /* UITextField+Extension.swift */; };
@@ -44,10 +46,12 @@
 
 /* Begin PBXFileReference section */
 		6102A4262BE8D72700307A6C /* CoreModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreModel.xcdatamodel; sourceTree = "<group>"; };
+		6102A4282BE963FB00307A6C /* CollectionView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectionView+Extension.swift"; sourceTree = "<group>"; };
 		6150AC6A2BE8B3510007201B /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
 		6150AC6C2BE8B36D0007201B /* BodyTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BodyTableView.swift; sourceTree = "<group>"; };
 		6150AC6E2BE8BC140007201B /* WishlistTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishlistTableViewCell.swift; sourceTree = "<group>"; };
-		6150AC702BE8BEB60007201B /* WishVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishVM.swift; sourceTree = "<group>"; };
+		6150AC702BE8BEB60007201B /* RecentVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentVM.swift; sourceTree = "<group>"; };
+		61A7B9412BE9819E002E501F /* WishVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishVM.swift; sourceTree = "<group>"; };
 		61E455E92BE69F9500A4D0C7 /* BookModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookModel.swift; sourceTree = "<group>"; };
 		61E455F12BE6CB4200A4D0C7 /* UITextField+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Extension.swift"; sourceTree = "<group>"; };
 		61E455F72BE71E3D00A4D0C7 /* Secret.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Secret.swift; sourceTree = "<group>"; };
@@ -122,7 +126,8 @@
 			isa = PBXGroup;
 			children = (
 				61E455F92BE7342D00A4D0C7 /* SearchVM.swift */,
-				6150AC702BE8BEB60007201B /* WishVM.swift */,
+				6150AC702BE8BEB60007201B /* RecentVM.swift */,
+				61A7B9412BE9819E002E501F /* WishVM.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -133,6 +138,7 @@
 				61E456102BE8174800A4D0C7 /* UIResponder+Extension.swift */,
 				61E455F12BE6CB4200A4D0C7 /* UITextField+Extension.swift */,
 				61E455FB2BE787C700A4D0C7 /* TableView+Extension.swift */,
+				6102A4282BE963FB00307A6C /* CollectionView+Extension.swift */,
 				61E4560E2BE813D500A4D0C7 /* Int+Extension.swift */,
 			);
 			path = Extension;
@@ -292,6 +298,7 @@
 				61E456062BE7EB1B00A4D0C7 /* ImageView.swift in Sources */,
 				61EB266B2BE64131009AC1B8 /* SearchView.swift in Sources */,
 				61EB26572BE61E78009AC1B8 /* MainViewController.swift in Sources */,
+				61A7B9422BE9819E002E501F /* WishVM.swift in Sources */,
 				61E455FA2BE7342D00A4D0C7 /* SearchVM.swift in Sources */,
 				61EB26532BE61E78009AC1B8 /* AppDelegate.swift in Sources */,
 				61E4560A2BE7EB4E00A4D0C7 /* ButtonView.swift in Sources */,
@@ -299,10 +306,11 @@
 				6150AC6B2BE8B3510007201B /* HeaderView.swift in Sources */,
 				61E455EA2BE69F9500A4D0C7 /* BookModel.swift in Sources */,
 				61EB26712BE655CF009AC1B8 /* RecentCollectionViewCell.swift in Sources */,
-				6150AC712BE8BEB60007201B /* WishVM.swift in Sources */,
+				6150AC712BE8BEB60007201B /* RecentVM.swift in Sources */,
 				6150AC6F2BE8BC140007201B /* WishlistTableViewCell.swift in Sources */,
 				6102A4272BE8D72700307A6C /* CoreModel.xcdatamodeld in Sources */,
 				61EB26552BE61E78009AC1B8 /* SceneDelegate.swift in Sources */,
+				6102A4292BE963FB00307A6C /* CollectionView+Extension.swift in Sources */,
 				61E456112BE8174800A4D0C7 /* UIResponder+Extension.swift in Sources */,
 				61E455FE2BE7E00D00A4D0C7 /* DetailViewController.swift in Sources */,
 				61EB266F2BE6416E009AC1B8 /* ResultView.swift in Sources */,

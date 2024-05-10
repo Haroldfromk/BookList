@@ -11,24 +11,26 @@ import CombineCocoa
 import SnapKit
 
 class RecentView: UIView {
-
+    
     
     private let textLabel = TextLabel().makeLabel(textValue: "최근 본 책")
+    
     let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        
+        layout.minimumLineSpacing = 5
+        layout.itemSize = .init(width: 220, height: 220)
         var view = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        view.backgroundColor = .blue
         view.register(RecentCollectionViewCell.self, forCellWithReuseIdentifier: Constants.collectionViewCellIdentifier)
+        view.allowsSelection = true
         return view
     }()
     
     private lazy var vStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
-        textLabel,
-        collectionView,
-        UIView()
+            textLabel,
+            collectionView,
+            UIView()
         ])
         stackView.axis = .vertical
         stackView.spacing = 5
@@ -45,7 +47,7 @@ class RecentView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-
+    
     
     private func layout() {
         addSubview(vStackView)
@@ -58,7 +60,7 @@ class RecentView: UIView {
             make.top.equalToSuperview()
             make.leading.equalTo(vStackView.snp.leading).offset(20)
             make.trailing.equalTo(vStackView.snp.trailing).offset(-20)
-
+            
         }
         
         collectionView.snp.makeConstraints { make in

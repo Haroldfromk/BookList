@@ -9,21 +9,44 @@ import Foundation
 
 struct BookModel: Codable {
     
-    let documents: [Document]
+    var meta: Meta
+    var documents: [Document]
     
+}
+
+struct Meta: Codable {
+    
+    var isEnd: Bool
+    var pageableCount: Int
+    var totalCount: Int
+    
+    enum CodingKeys: String, CodingKey {
+        case isEnd = "is_end"
+        case pageableCount = "pageable_count"
+        case totalCount = "total_count"
+    }
+    
+    init(isEnd: Bool, pageableCount: Int, totalCount: Int) {
+        self.isEnd = isEnd
+        self.pageableCount = pageableCount
+        self.totalCount = totalCount
+    }
 }
 
 struct Document: Codable {
     
-    let authors: [String]
-    let contents: String
-    let price: Int
-    let title: String
-    let thumbnail: String
-    let salePrice: Int?
+    var authors: [String]
+    var contents: String
+    var price: Int
+    var title: String
+    var thumbnail: String
     
-    enum Codingkeys: String, CodingKey {
-        case salePrice = "sale_price"
+    
+    init(authors: [String], contents: String, price: Int, title: String, thumbnail: String) {
+        self.authors = authors
+        self.contents = contents
+        self.price = price
+        self.title = title
+        self.thumbnail = thumbnail
     }
-    
 }

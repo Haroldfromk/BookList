@@ -11,11 +11,20 @@ import CombineCocoa
 import SnapKit
 
 class SearchView: UIView {
-
-    private lazy var searchBar: UISearchBar = {
+    
+    let searchVM = SearchVM()
+    
+    lazy var searchBar: UISearchBar = {
         let bar = UISearchBar()
         bar.placeholder = "검색어를 입력하세요."
-        bar.autocorrectionType = .no
+        bar.returnKeyType = .done
+        bar.showsCancelButton = true
+        bar.searchButtonClickedPublisher.sink { [unowned self] _ in
+            observe()
+        }.store(in: &cancellables)
+        bar.cancelButtonClickedPublisher.sink { [unowned self] _ in
+            endEditing(true)
+        }.store(in: &cancellables)
         return bar
     }()
     
@@ -41,7 +50,8 @@ class SearchView: UIView {
         searchBar.searchTextField.textPublisher
             .debounce(for: 1, scheduler: RunLoop.main) // 1초의 시간을 기다렸다가 전달.
             .sink { [weak self] value in
-                self?.searchBarSubject.send(value)
+                    self?.searchBarSubject.send(value)
+                    self?.endEditing(true)
         }.store(in: &cancellables)
     }
     
