@@ -15,7 +15,7 @@ class SearchVM {
         let searchPublisher: AnyPublisher<String, Never>
         let numberPublisher: AnyPublisher<Int, Never>
     }
-   
+    
     
     private var cancellables = Set<AnyCancellable>()
     
@@ -24,24 +24,31 @@ class SearchVM {
     
     var currentPage = 1
     
-   
+    
     let numberSubject = PassthroughSubject<Int, Never>()
     var valuePublisher: AnyPublisher<Int, Never> {
         return numberSubject.eraseToAnyPublisher()
     }
     
     func transform(input: Input) {
-            
-            Publishers.CombineLatest(input.searchPublisher, input.numberPublisher).flatMap { value, page in
-                let tuple = (value, page)
-                return Just(tuple)
+        
+        Publishers.CombineLatest(input.searchPublisher, input.numberPublisher)
+            .map { [unowned self] (value, page) in
+                if value.isEmpty {
+                    currentPage = 1
+                    document = []
+                }
+                return (value, currentPage)
             }
             .eraseToAnyPublisher()
-            .sink { [weak self] data in
-                self?.fetchTotalRequest(queryValue: data.0, page: data.1)
-            }.store(in: &cancellables)
-            
-        }
+            .print()
+            .sink { [weak self] (value, page) in
+                guard !value.isEmpty else { return } // value가 빈 문자열인 경우 fetchTotalRequest 호출하지 않음
+                self?.fetchTotalRequest(queryValue: value, page: page)
+            }
+            .store(in: &cancellables)
+        
+    }
     
     func fetchTotalRequest(queryValue: String, page: Int) {
         let urlString = "https://dapi.kakao.com/v3/search/book?target=title"

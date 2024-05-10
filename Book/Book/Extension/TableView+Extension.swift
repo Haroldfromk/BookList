@@ -84,14 +84,12 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     @objc func loadData() {
         searchVM.currentPage += 1
         searchVM.numberSubject.send(searchVM.currentPage)
-        searchVM.transform(input: SearchVM.Input(searchPublisher: searchView.valuePublisher, numberPublisher: searchVM.valuePublisher))
         searchVM.$document
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
             .sink { [weak self] _ in
                 self?.resultView.tableView.reloadData()
             }.store(in: &cancellables)
-        print(searchVM.currentPage)
     }
     
 }

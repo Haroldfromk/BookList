@@ -72,7 +72,6 @@ class MainViewController: UIViewController {
                 self?.resultView.tableView.reloadData()
             }
             .store(in: &cancellables)
-        
         searchVM.numberSubject.send(1)
         
         recentVM.getDocumentfromCoreData()
