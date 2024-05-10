@@ -81,7 +81,16 @@ class MainViewController: UIViewController {
             .sink { [weak self] data in
                 self?.recentView.collectionView.reloadData()
             }.store(in: &cancellables)
-
+        recentVM.routerSubject
+            .receive(on: DispatchQueue.main)
+            .sink { router in
+            switch router {
+            case .alert(let title, let message):
+                let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "확인", style: .default))
+                self.present(alert, animated: true)
+            }
+        }.store(in: &cancellables)
     }
     
     private func layout() {

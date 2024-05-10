@@ -30,7 +30,7 @@ class DetailViewController: UIViewController {
         return stackView
     }()
     
-    private var cancellables = Set<AnyCancellable>()
+    var cancellables = Set<AnyCancellable>()
     var wishSubject = CurrentValueSubject<Document, Never>(.init(authors: [], contents: "", price: 0, title: "", thumbnail: ""))
 
     let wishVM = WishVM()

@@ -50,9 +50,11 @@ class WishlistViewController: UIViewController {
                 self.bodyTableView.tableView.reloadData()
             }.store(in: &cancellables)
         
-        wishVM.routerSubject.sink { alert in
+        wishVM.routerSubject
+            .receive(on: DispatchQueue.main)
+            .sink { alert in
             switch alert {
-            case .alert(let title, let message) :
+            case .alert(let title, let message):
                 let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "확인", style: .default))
                 self.present(alert, animated: true)

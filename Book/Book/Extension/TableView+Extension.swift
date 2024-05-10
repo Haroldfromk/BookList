@@ -46,15 +46,15 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
             }
             .eraseToAnyPublisher()
             .receive(on: DispatchQueue.main)
-            .sink { document in
+            .sink { [weak detailVC] document in
                 let imageURL = URL(string: document.thumbnail)
-                detailVC.titleView.titleLabel.text = document.title
-                detailVC.titleView.authorLabel.text = document.authors.joined()
-                detailVC.imageView.imageView.kf.setImage(with: imageURL)
-                detailVC.imageView.priceLabel.text = document.price.stringValue
-                detailVC.bodyView.bodyLabel.text = document.contents
-                detailVC.wishSubject.send(document)
-            }.store(in: &cancellables)
+                detailVC?.titleView.titleLabel.text = document.title
+                detailVC?.titleView.authorLabel.text = document.authors.joined()
+                detailVC?.imageView.imageView.kf.setImage(with: imageURL)
+                detailVC?.imageView.priceLabel.text = document.price.stringValue
+                detailVC?.bodyView.bodyLabel.text = document.contents
+                detailVC?.wishSubject.send(document)
+            }.store(in: &detailVC.cancellables)
         
         // CoreData에 등록
         searchVM.$document
@@ -68,8 +68,7 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
             .eraseToAnyPublisher()
             .sink(receiveValue: { [weak self] document in
                 self?.recentVM.saveDocumentToCoredata(data: document)
-            })
-            .store(in: &cancellables)
+            }).cancel()
         
         detailVC.modalPresentationStyle = .fullScreen
         present(detailVC, animated: true)
@@ -79,9 +78,7 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if indexPath.section == 0 && indexPath.row == searchVM.document.count - 1 { // 마지막에 도달했을때
             Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(loadData), userInfo: nil, repeats: false)
-           
         }
-        
     }
     
     @objc func loadData() {

@@ -33,7 +33,7 @@ class RecentVM {
         newItem.image = data.thumbnail
         newItem.price = Int64(data.price)
         newItem.date = Date().timeIntervalSince1970
-        
+        print("저장완료")
         
         do {
             try context.save()
@@ -75,7 +75,7 @@ class RecentVM {
                 .assign(to: \.recentDocument, on: self)
                 .store(in: &cancellables)
         } catch {
-          
+            routerSubject.send(Router.alert(title: "예외 발생", message: "\(error.localizedDescription) 이 발생했습니다."))
         }
      
     }
