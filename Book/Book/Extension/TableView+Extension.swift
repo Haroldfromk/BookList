@@ -11,29 +11,10 @@ import Kingfisher
 import Combine
 
 // MARK: - MainVC TableView Functions
-extension MainViewController: UITableViewDelegate, UITableViewDataSource {
-    
+extension MainViewController: UITableViewDelegate {
     
     func tableSetUp() {
         resultView.tableView.delegate = self
-        resultView.tableView.dataSource = self
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return searchVM.document.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = resultView.tableView.dequeueReusableCell(withIdentifier: Constants.tableViewCellIdentifier) as? ResultTableViewCell else {
-            return UITableViewCell()
-        }
-        
-        let item = searchVM.document[indexPath.row]
-        
-        cell.configure(model: item)
-        cell.selectionStyle = .none
-        
-        return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

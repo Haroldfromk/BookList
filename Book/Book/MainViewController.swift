@@ -34,19 +34,21 @@ class MainViewController: UIViewController {
     let recentVM = RecentVM()
     let wishVM = WishVM()
     
-    
+    var tableDatasource: UITableViewDiffableDataSource<DiffableSectionModel, Document>?
+    //var collectionDatasource: UICollectionViewDiffableDataSource<DiffableSectionModel, DiffableSectionItemModel>?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         
         layout()
-        tableSetUp()
+        //tableSetUp()
         collectionSetUp()
         
         bind()
+        configureDiffableDataSource()
         checkEmpty()
-
+        
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -69,7 +71,7 @@ class MainViewController: UIViewController {
         searchVM.$document
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
-                self?.resultView.tableView.reloadData()
+                self?.configureSnapshot()
             }
             .store(in: &cancellables)
         searchVM.numberSubject.send(1)

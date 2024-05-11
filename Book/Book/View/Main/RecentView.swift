@@ -15,7 +15,7 @@ class RecentView: UIView {
     
     private let textLabel = TextLabel().makeLabel(textValue: "최근 본 책")
     
-    let collectionView: UICollectionView = {
+    lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         layout.minimumLineSpacing = 5

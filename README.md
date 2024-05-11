@@ -72,6 +72,14 @@
 <details>
    <summary>24.05.10</summary>
    <pre>● ReadMe 작성
+● 예외처리
+   </pre>
+</details> 
+
+<details>
+   <summary>24.05.11</summary>
+   <pre>● Network / Coredata Functions VM으로 부터 분리 (Service Group)
+● Datasource → DiffableDatasource 적용
    </pre>
 </details> 
 

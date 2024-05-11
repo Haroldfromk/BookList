@@ -7,14 +7,14 @@
 
 import Foundation
 
-struct BookModel: Codable {
+struct BookModel: Codable, Hashable {
     
     var meta: Meta
     var documents: [Document]
     
 }
 
-struct Meta: Codable {
+struct Meta: Codable, Hashable {
     
     var isEnd: Bool
     var pageableCount: Int
@@ -33,7 +33,7 @@ struct Meta: Codable {
     }
 }
 
-struct Document: Codable {
+struct Document: Codable,Hashable {
     
     var authors: [String]
     var contents: String
