@@ -10,7 +10,7 @@ import UIKit
 extension MainViewController {
     
     func configureDiffableDataSource () {
-        tableDatasource = UITableViewDiffableDataSource(tableView: resultView.tableView, cellProvider: { tableView, indexPath, model in
+        recentTableDatasource = UITableViewDiffableDataSource(tableView: resultView.tableView, cellProvider: { tableView, indexPath, model in
             
             let cell = tableView.dequeueReusableCell(withIdentifier: Constants.tableViewCellIdentifier, for: indexPath) as! ResultTableViewCell
             
@@ -32,20 +32,50 @@ extension MainViewController {
     }
     
     func configureSnapshot() {
-        var snapshot = NSDiffableDataSourceSnapshot<DiffableSectionModel, Document>()
-        snapshot.appendSections([.search])
-        snapshot.appendItems(searchVM.document)
+        tableSnapshot = NSDiffableDataSourceSnapshot<DiffableSectionModel, Document>()
+        tableSnapshot?.deleteAllItems()
+        tableSnapshot?.appendSections([.search])
+        tableSnapshot?.appendItems(searchVM.document)
 
-        tableDatasource?.apply(snapshot,animatingDifferences: true)
+        recentTableDatasource?.apply(tableSnapshot!,animatingDifferences: true)
         
     }
     
     func collectionConfigureSnapshot () {
-        var collectionSnapshot = NSDiffableDataSourceSnapshot<DiffableSectionModel, RecentModel>()
-        collectionSnapshot.appendSections([.recent])
-        collectionSnapshot.appendItems(recentVM.recentDocument)
+        collectionSnapshot = NSDiffableDataSourceSnapshot<DiffableSectionModel, RecentModel>()
+        collectionSnapshot?.deleteAllItems()
+        collectionSnapshot?.appendSections([.recent])
+        collectionSnapshot?.appendItems(recentVM.recentDocument)
         
-        collectionDatasource?.apply(collectionSnapshot, animatingDifferences: true)
+        collectionDatasource?.apply(collectionSnapshot!, animatingDifferences: true)
+    }
+    
+}
+
+extension WishlistViewController {
+        
+    func configureDiffableDataSource () {
+        wishTableDatasource = UITableViewDiffableDataSource(tableView: bodyTableView.tableView, cellProvider: { tableView, indexPath, model in
+            
+            let cell = tableView.dequeueReusableCell(withIdentifier: Constants.wishlistCellIdentifier, for: indexPath) as! WishlistTableViewCell
+            
+            cell.configure(model: model)
+            cell.selectionStyle = .none
+            
+            return cell
+        })
+    
+    }
+    
+    func configureSnapshot() {
+        
+        snapshot = NSDiffableDataSourceSnapshot<DiffableSectionModel, WishListModel>()
+        snapshot?.deleteAllItems()
+        snapshot?.appendSections([.wish])
+        snapshot?.appendItems(wishVM.wishDocument)
+
+        wishTableDatasource?.apply(snapshot!,animatingDifferences: true)
+        
     }
     
 }

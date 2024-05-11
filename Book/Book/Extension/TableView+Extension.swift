@@ -75,28 +75,10 @@ extension MainViewController: UITableViewDelegate {
 }
 
 // MARK: - WishlistVC TableView Functions
-extension WishlistViewController: UITableViewDelegate, UITableViewDataSource {
+extension WishlistViewController: UITableViewDelegate {
     
     func setUp() {
         bodyTableView.tableView.delegate = self
-        bodyTableView.tableView.dataSource = self
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        wishVM.wishDocument.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = bodyTableView.tableView.dequeueReusableCell(withIdentifier: Constants.wishlistCellIdentifier) as? WishlistTableViewCell else {
-            return UITableViewCell()
-        }
-        
-        let item = wishVM.wishDocument[indexPath.row]
-    
-        cell.configure(model: item)
-        cell.selectionStyle = .none
-        
-        return cell
     }
     
     // SwipeAction For Delete Specific Cell
@@ -108,10 +90,8 @@ extension WishlistViewController: UITableViewDelegate, UITableViewDataSource {
             let ok = UIAlertAction(title: "OK", style: .destructive, handler: { [unowned self] _ in
                 
                 wishVM.deleteSelectedData(selectedCell: wishVM.wishDocument[indexPath.row])
-                tableView.beginUpdates()
                 wishVM.wishDocument.remove(at: indexPath.row)
-                tableView.deleteRows(at: [indexPath], with: .fade)
-                tableView.endUpdates()
+
             })
             
             let cancel = UIAlertAction(title: "취소", style: .default)

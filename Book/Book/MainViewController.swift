@@ -34,8 +34,10 @@ class MainViewController: UIViewController {
     let recentVM = RecentVM()
     let wishVM = WishVM()
     
-    var tableDatasource: UITableViewDiffableDataSource<DiffableSectionModel, Document>?
+    var recentTableDatasource: UITableViewDiffableDataSource<DiffableSectionModel, Document>?
     var collectionDatasource: UICollectionViewDiffableDataSource<DiffableSectionModel, RecentModel>?
+    var tableSnapshot: NSDiffableDataSourceSnapshot<DiffableSectionModel, Document>?
+    var collectionSnapshot: NSDiffableDataSourceSnapshot<DiffableSectionModel, RecentModel>?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,7 +55,12 @@ class MainViewController: UIViewController {
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        bind()
+        recentVM.getDocument()
+        recentVM.$recentDocument
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] data in
+                self?.collectionConfigureSnapshot()
+            }.store(in: &cancellables)
         checkEmpty()
     }
     

@@ -27,14 +27,18 @@ class WishlistViewController: UIViewController {
     }()
     
     private var cancellables = Set<AnyCancellable>()
+    
     let wishVM = WishVM()
+    var wishTableDatasource: UITableViewDiffableDataSource<DiffableSectionModel, WishListModel>?
+    var snapshot: NSDiffableDataSourceSnapshot<DiffableSectionModel, WishListModel>?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         
-        setUp()
         layout()
+        configureDiffableDataSource()
+        setUp()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -47,7 +51,7 @@ class WishlistViewController: UIViewController {
         wishVM.$wishDocument
             .receive(on: DispatchQueue.main)
             .sink { [unowned self] _ in
-                self.bodyTableView.tableView.reloadData()
+                configureSnapshot()
             }.store(in: &cancellables)
         
         CoredataManager.shared.routerSubject

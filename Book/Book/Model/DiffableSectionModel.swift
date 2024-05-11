@@ -11,5 +11,6 @@ enum DiffableSectionModel {
     
     case recent
     case search
+    case wish
     
 }

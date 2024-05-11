@@ -53,7 +53,6 @@ class CoredataManager {
         return Future<[RecentModel], Error> { [unowned self] complete in
             do {
                 try context.fetch(recentRequest).publisher
-                    .receive(on: DispatchQueue.main)
                     .flatMap { data in
                         Publishers.Sequence(sequence: [data])}
                     .collect()
@@ -102,8 +101,6 @@ class CoredataManager {
                 try context.fetch(wishRequest).publisher.flatMap { data in
                     Publishers.Sequence(sequence: [data])
                 }
-                .receive(on: DispatchQueue.main
-                )
                 .collect()
                 .eraseToAnyPublisher()
                 .sink(receiveValue: { model in
@@ -128,7 +125,6 @@ class CoredataManager {
                 try context.fetch(predicateRequest).publisher.flatMap { data in
                     Publishers.Sequence(sequence: [data])
                 }
-                .receive(on: DispatchQueue.main)
                 .collect()
                 .eraseToAnyPublisher()
                 .sink(receiveValue: { model in
