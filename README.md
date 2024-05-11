@@ -83,6 +83,12 @@
    </pre>
 </details> 
 
+<details>
+   <summary>24.05.12</summary>
+   <pre>● 예외처리
+   </pre>
+</details> 
+
 ## Demo
 <p float="left">
 <img src="https://github.com/Haroldfromk/BookList/assets/97341336/8be13234-e646-4c10-992b-0c6af85ac713" width="200" height="430">
