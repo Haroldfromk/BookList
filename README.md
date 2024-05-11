@@ -137,10 +137,15 @@
 
 ```markdown
 Book
+├── Service
+│   ├── NetworkManager
+│   └── CoredataManager
+│
 ├── Making
 │   └── TextLabel
 │
 ├── Extension
+│   ├── Diffable+Extension
 │   ├── CollectionView+Extension
 │   ├── Int+Extension
 │   ├── TableView+Extension
@@ -148,6 +153,7 @@ Book
 │   └── UIResponder+Extension
 │
 ├── Model
+│   ├── DiffableSectionModel
 │   ├── BookModel
 │   └── CoreModel(Coredata)
 │

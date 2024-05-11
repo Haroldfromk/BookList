@@ -53,8 +53,8 @@ class MainViewController: UIViewController {
         
     }
     
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         recentVM.getDocument()
         recentVM.$recentDocument
             .receive(on: DispatchQueue.main)
@@ -63,6 +63,17 @@ class MainViewController: UIViewController {
             }.store(in: &cancellables)
         checkEmpty()
     }
+    
+//    override func viewDidDisappear(_ animated: Bool) {
+//        super.viewDidDisappear(animated)
+//        recentVM.getDocument()
+//        recentVM.$recentDocument
+//            .receive(on: DispatchQueue.main)
+//            .sink { [weak self] data in
+//                self?.collectionConfigureSnapshot()
+//            }.store(in: &cancellables)
+//        checkEmpty()
+//    }
     
     private func checkEmpty() {
         if recentVM.recentDocument.isEmpty {
