@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import Kingfisher
 
 class RecentCollectionViewCell: UICollectionViewCell {
     
@@ -59,6 +60,13 @@ class RecentCollectionViewCell: UICollectionViewCell {
             make.height.equalTo(vStackView.snp.height).multipliedBy(0.4)
         }
     }
+    
+    func configure (model: RecentModel) {
+        guard let image = model.image else {return}
+        imageView.kf.setImage(with: URL(string: image))
+        titleLabel.text = model.title
+    }
+    
     
     override func prepareForReuse() {
         super.prepareForReuse()

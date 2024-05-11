@@ -22,8 +22,8 @@ class HeaderView: UIView {
             if let vc = childViewController as? WishlistViewController {
                 let alert = UIAlertController(title: "전체 삭제하시겠습니까?", message: "삭제하시면 복원은 불가능합니다.", preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "확인", style: .destructive, handler: { [unowned self] _ in
-                    vc.wishVM.deleteAllData()
-                    vc.wishVM.getDocumentfromCoreData()
+                    vc.wishVM.removeAllData()
+                    vc.wishVM.getWholeDocument()
                     vc.bodyTableView.tableView.reloadData()
                 }))
                 alert.addAction(UIAlertAction(title: "취소", style: .default))

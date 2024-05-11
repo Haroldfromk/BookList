@@ -33,7 +33,7 @@ class ButtonView: UIView {
             let vc = childViewController as? DetailViewController
             vc?.wishSubject.sink(receiveValue: { [unowned self] document in
                 if vc?.wishVM.checkDuplicate(title: document.title) == false {
-                    vc?.wishVM.saveDocumentToCoredata(data: document)
+                    vc?.wishVM.saveDatatoWish(data: document)
                     let alert = UIAlertController(title: "담기 완료", message: "책이 담겼습니다.", preferredStyle: .alert)
                     alert.addAction(UIAlertAction(title: "확인", style: .default, handler: { [unowned self] _ in
                         goToMainVC()

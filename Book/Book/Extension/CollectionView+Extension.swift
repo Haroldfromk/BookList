@@ -9,33 +9,10 @@ import UIKit
 import Combine
 import Kingfisher
 
-extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+extension MainViewController: UICollectionViewDelegate {
     
     func collectionSetUp () {
-        recentView.collectionView.dataSource = self
         recentView.collectionView.delegate = self
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        recentVM.recentDocument.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
-        guard let cell = recentView.collectionView.dequeueReusableCell(withReuseIdentifier: Constants.collectionViewCellIdentifier, for: indexPath) as? RecentCollectionViewCell else { return UICollectionViewCell() }
-        
-        recentVM.$recentDocument
-            .map { document in
-                return document[indexPath.row]
-            }
-            .eraseToAnyPublisher()
-            .sink { model in
-                let image = URL(string: model.image!)
-                cell.imageView.kf.setImage(with: image)
-                cell.titleLabel.text = model.title
-            }.store(in: &cancellables)
-        
-        return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

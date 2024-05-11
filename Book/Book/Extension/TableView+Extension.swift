@@ -5,7 +5,6 @@
 //  Created by Dongik Song on 5/5/24.
 //
 
-import Foundation
 import UIKit
 import Kingfisher
 import Combine
@@ -47,8 +46,8 @@ extension MainViewController: UITableViewDelegate {
                 }
             }
             .eraseToAnyPublisher()
-            .sink(receiveValue: { [weak self] document in
-                self?.recentVM.saveDocumentToCoredata(data: document)
+            .sink(receiveValue: { [unowned self] document in
+                recentVM.saveDataToRecent(data: document)
             }).cancel()
         
         detailVC.modalPresentationStyle = .fullScreen
@@ -108,7 +107,7 @@ extension WishlistViewController: UITableViewDelegate, UITableViewDataSource {
             
             let ok = UIAlertAction(title: "OK", style: .destructive, handler: { [unowned self] _ in
                 
-                wishVM.deleteSpeificData(selectedCell: wishVM.wishDocument[indexPath.row])
+                wishVM.deleteSelectedData(selectedCell: wishVM.wishDocument[indexPath.row])
                 tableView.beginUpdates()
                 wishVM.wishDocument.remove(at: indexPath.row)
                 tableView.deleteRows(at: [indexPath], with: .fade)

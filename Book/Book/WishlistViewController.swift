@@ -43,14 +43,14 @@ class WishlistViewController: UIViewController {
     }
     
     private func bind () {
-        wishVM.getDocumentfromCoreData()
+        wishVM.getWholeDocument()
         wishVM.$wishDocument
             .receive(on: DispatchQueue.main)
             .sink { [unowned self] _ in
                 self.bodyTableView.tableView.reloadData()
             }.store(in: &cancellables)
         
-        wishVM.routerSubject
+        CoredataManager.shared.routerSubject
             .receive(on: DispatchQueue.main)
             .sink { alert in
             switch alert {

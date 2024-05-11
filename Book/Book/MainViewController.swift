@@ -35,14 +35,14 @@ class MainViewController: UIViewController {
     let wishVM = WishVM()
     
     var tableDatasource: UITableViewDiffableDataSource<DiffableSectionModel, Document>?
-    //var collectionDatasource: UICollectionViewDiffableDataSource<DiffableSectionModel, DiffableSectionItemModel>?
+    var collectionDatasource: UICollectionViewDiffableDataSource<DiffableSectionModel, RecentModel>?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         
         layout()
-        //tableSetUp()
+        tableSetUp()
         collectionSetUp()
         
         bind()
@@ -76,13 +76,14 @@ class MainViewController: UIViewController {
             .store(in: &cancellables)
         searchVM.numberSubject.send(1)
         
-        recentVM.getDocumentfromCoreData()
+        recentVM.getDocument()
         recentVM.$recentDocument
             .receive(on: DispatchQueue.main)
             .sink { [weak self] data in
-                self?.recentView.collectionView.reloadData()
+                self?.collectionConfigureSnapshot()
             }.store(in: &cancellables)
-        recentVM.routerSubject
+        
+        CoredataManager.shared.routerSubject
             .receive(on: DispatchQueue.main)
             .sink { router in
             switch router {
