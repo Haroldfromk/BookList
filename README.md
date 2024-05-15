@@ -103,7 +103,7 @@
 
 <details>
    <summary>24.05.15</summary>
-   <pre>● 
+   <pre>● Coredata catch block에 대한 bind 부분 수정
    </pre>
 </details> 
 
