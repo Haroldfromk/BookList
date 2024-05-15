@@ -30,7 +30,6 @@ class ResultView: UIView {
                             return document[indexPath.row]
                         }
                         .eraseToAnyPublisher()
-                        .receive(on: DispatchQueue.main)
                         .sink { [weak detailVC] document in
                             let imageURL = URL(string: document.thumbnail)
                             detailVC?.titleView.titleLabel.text = document.title
@@ -41,7 +40,7 @@ class ResultView: UIView {
                             detailVC?.wishSubject.send(document)
                         }.store(in: &detailVC.cancellables)
                     
-                    // CoreData에 등록
+                    // Data 저장
                     mainVC.searchVM.$document
                         .map{  document in
                             if !document.isEmpty {

@@ -15,9 +15,21 @@ class WishVM {
     private var cancellables = Set<AnyCancellable>()
     @Published var wishDocument = [WishListModel]()
     
+    let coredataManager = CoredataManager()
+    var routerSubject = PassthroughSubject<Router, Never>()
+    
     func saveDatatoWish (data: Document) {
-        CoredataManager.shared.saveWishDocumentToCoredata(data: data)
+        coredataManager.saveWishDocumentToCoredata(data: data) { result in
+            switch result {
+            case .success(_):
+                return
+            case .failure(let error):
+                self.routerSubject.send(Router.alert(title: "예외 발생", message: "\(error.localizedDescription) 이 발생했습니다."))
+            }
+        }
     }
+    
+
     
     func checkDuplicate (title: String) -> Bool {
         
@@ -33,12 +45,12 @@ class WishVM {
     }
     
     func getWholeDocument () {
-        CoredataManager.shared.getWishDocumentfromCoreData().sink { complete in
+        coredataManager.getWishDocumentfromCoreData().sink { complete in
             switch complete {
             case .finished:
                 return
-            case .failure(_):
-                return
+            case .failure(let error):
+                self.routerSubject.send(Router.alert(title: "예외 발생", message: "\(error.localizedDescription) 이 발생했습니다."))
             }
         } receiveValue: { [weak self] model in
             self?.wishDocument = model
@@ -48,12 +60,12 @@ class WishVM {
     }
     
     func getSpecificDocument (title: String) {
-        CoredataManager.shared.getSpecificData(title: title).sink { complete in
+        coredataManager.getSpecificData(title: title).sink { complete in
             switch complete {
             case .finished:
                 return
-            case .failure(_):
-                return
+            case .failure(let error):
+                self.routerSubject.send(Router.alert(title: "예외 발생", message: "\(error.localizedDescription) 이 발생했습니다."))
             }
         } receiveValue: { [weak self] model in
             self?.wishDocument = model
@@ -63,12 +75,26 @@ class WishVM {
     }
     
     func deleteSelectedData(selectedCell: NSManagedObject) {
-        CoredataManager.shared.deleteSpeificData(selectedCell: selectedCell)
+        coredataManager.deleteSpeificData(selectedCell: selectedCell) { result in
+            switch result {
+            case .success(_):
+                return
+            case .failure(let error):
+                self.routerSubject.send(Router.alert(title: "예외 발생", message: "\(error.localizedDescription) 이 발생했습니다."))
+            }
+        }
     }
     
     func removeAllData () {
-        CoredataManager.shared.deleteAllData()
+        coredataManager.deleteAllData { result in
+            switch result {
+            case .success(_):
+                return
+            case .failure(let error):
+                self.routerSubject.send(Router.alert(title: "예외 발생", message: "\(error.localizedDescription) 이 발생했습니다."))
+            }
+        }
     }
-    
+
 }
 

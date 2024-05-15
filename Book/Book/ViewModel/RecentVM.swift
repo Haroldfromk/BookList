@@ -12,12 +12,23 @@ class RecentVM {
     
     
     @Published var recentDocument = [RecentModel]()
+    
     private var cancellables = Set<AnyCancellable>()
     
+    let coredataManager = CoredataManager()
     
     func saveDataToRecent (data: Document) {
-        CoredataManager.shared.saveRecentDocumentToCoredata(data: data)
+        coredataManager.saveRecentDocumentToCoredata(data: data) { result in
+            switch result {
+            case .success(_):
+                return
+            case .failure(let error):
+                self.routerSubject.send(Router.alert(title: "예외 발생", message: "\(error.localizedDescription) 이 발생했습니다."))
+            }
+        }
     }
+    
+    var routerSubject = PassthroughSubject<Router, Never>()
     
     func convertModel(input: RecentModel) -> Document {
         
@@ -32,12 +43,12 @@ class RecentVM {
     }
     
     func getDocument () {
-        CoredataManager.shared.getRecentDocumentfromCoreData().sink { complete in
+        coredataManager.getRecentDocumentfromCoreData().sink { complete in
             switch complete {
             case .finished:
                 return
-            case .failure(_):
-                return
+            case .failure(let error):
+                self.routerSubject.send(Router.alert(title: "예외 발생", message: "\(error.localizedDescription) 이 발생했습니다."))
             }
         } receiveValue: {[weak self] model in
             self?.recentDocument = model

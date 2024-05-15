@@ -20,23 +20,8 @@ class BodyTableView: UIView {
         tableView.rowHeight = 80
         return tableView
     }()
-    
-    private lazy var swipePublisher: AnyPublisher<Void, Never> = {
-        let swipeGesture = UISwipeGestureRecognizer(target: self, action: nil)
-        tableView.addGestureRecognizer(swipeGesture)
-        
-        return swipeGesture.swipePublisher.flatMap { _ in
-            Just(())
-        }.eraseToAnyPublisher()
-    }()
-    
+
     var cancellables = Set<AnyCancellable>()
-    
-    private func observe () {
-        swipePublisher.sink { indexPath in
-            print(indexPath)
-        }.store(in: &cancellables)
-    }
     
     override init(frame: CGRect) {
         super.init(frame: .zero)

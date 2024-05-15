@@ -15,19 +15,16 @@ class CoredataManager {
         case alert(title: String, message: String)
     }
     
-    static let shared = CoredataManager()
     
-    private init () { }
- 
     let context = (UIApplication.shared.delegate as! AppDelegate) .persistentContainer.viewContext
     let recentRequest: NSFetchRequest<RecentModel> = RecentModel.fetchRequest()
     let wishRequest: NSFetchRequest<WishListModel> = WishListModel.fetchRequest()
-
-    var routerSubject = PassthroughSubject<Router, Never>()
+    
+    
     private var cancellables = Set<AnyCancellable>()
     
     // MARK: - recent
-    func saveRecentDocumentToCoredata (data: Document) {
+    func saveRecentDocumentToCoredata (data: Document, completion: @escaping ((Result<Void, Error>) -> Void)) {
         
         let newItem = RecentModel(context: context)
         newItem.title = data.title
@@ -39,9 +36,11 @@ class CoredataManager {
         print("저장완료")
         
         do {
-            try context.save()
+            completion(.success(
+                try context.save()
+            ))
         } catch {
-            routerSubject.send(Router.alert(title: "예외 발생", message: "\(error.localizedDescription) 이 발생했습니다."))
+            completion(.failure(error))
         }
         
     }
@@ -70,13 +69,13 @@ class CoredataManager {
                     })
                     .store(in: &cancellables)
             } catch {
-                routerSubject.send(Router.alert(title: "예외 발생", message: "\(error.localizedDescription) 이 발생했습니다."))
+                complete(.failure(error))
             }
         }
     }
     
     // MARK: - wish
-    func saveWishDocumentToCoredata (data: Document) {
+    func saveWishDocumentToCoredata (data: Document, completion: @escaping ((Result<Void, Error>) -> Void)) {
         
         let newItem = WishListModel(context: context)
         newItem.title = data.title
@@ -86,9 +85,11 @@ class CoredataManager {
         newItem.price = Int64(data.price)
         
         do {
-            try context.save()
+            completion(.success(
+                try context.save()
+            ))
         } catch {
-            routerSubject.send(Router.alert(title: "예외 발생", message: "\(error.localizedDescription) 이 발생했습니다."))
+            completion(.failure(error))
         }
         
     }
@@ -107,7 +108,7 @@ class CoredataManager {
                 })
                 .store(in: &cancellables)
             } catch {
-                routerSubject.send(Router.alert(title: "예외 발생", message: "\(error.localizedDescription) 이 발생했습니다."))
+                complete(.failure(error))
             }
         }
     }
@@ -131,29 +132,34 @@ class CoredataManager {
                 })
                 .store(in: &cancellables)
             } catch {
-                routerSubject.send(Router.alert(title: "예외 발생", message: "\(error.localizedDescription) 이 발생했습니다."))
+                complete(.failure(error))
             }
         }
     }
     
-    func deleteAllData () {
+    func deleteAllData (completion: @escaping ((Result<Void, Error>) -> Void)) {
+        
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "WishListModel")
         let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
-        
         do {
             try context.execute(deleteRequest)
             try context.save()
+            completion(.success(()))
         } catch {
-            routerSubject.send(Router.alert(title: "예외 발생", message: "\(error.localizedDescription) 이 발생했습니다."))
+            completion(.failure(error))
         }
+        
+        
+        
     }
     
-    func deleteSpeificData (selectedCell: NSManagedObject) {
+    func deleteSpeificData (selectedCell: NSManagedObject, completion: @escaping ((Result<Void, Error>) -> Void)) {
         do {
             context.delete(selectedCell)
             try context.save()
+            completion(.success(()))
         } catch {
-            routerSubject.send(Router.alert(title: "예외 발생", message: "\(error.localizedDescription) 이 발생했습니다."))
+            completion(.failure(error))
         }
         
     }

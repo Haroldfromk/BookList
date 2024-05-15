@@ -44,7 +44,7 @@ class MainViewController: UIViewController {
         view.backgroundColor = .systemBackground
         
         layout()
-       // tableSetUp()
+        // tableSetUp()
         
         bind()
         configureDiffableDataSource()
@@ -57,12 +57,12 @@ class MainViewController: UIViewController {
         recentVM.getDocument()
         recentVM.$recentDocument
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] data in
+            .sink { [weak self] _ in
                 self?.collectionConfigureSnapshot()
             }.store(in: &cancellables)
         checkEmpty()
     }
-        
+    
     private func checkEmpty() {
         if recentVM.recentDocument.isEmpty {
             recentView.collectionView.isHidden = true
@@ -72,15 +72,15 @@ class MainViewController: UIViewController {
     }
     
     private func bind () {
-
+        
         searchVM.transform(input: SearchVM.Input(searchPublisher: searchView.valuePublisher, numberPublisher: searchVM.valuePublisher))
+        searchVM.numberSubject.send(1)
         searchVM.$document
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
                 self?.configureSnapshot()
             }
             .store(in: &cancellables)
-        searchVM.numberSubject.send(1)
         
         recentVM.getDocument()
         recentVM.$recentDocument
@@ -89,9 +89,8 @@ class MainViewController: UIViewController {
                 self?.collectionConfigureSnapshot()
             }.store(in: &cancellables)
         
-        CoredataManager.shared.routerSubject
-            .receive(on: DispatchQueue.main)
-            .sink { router in
+        
+        recentVM.routerSubject.sink { router in
             switch router {
             case .alert(let title, let message):
                 let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
@@ -99,6 +98,7 @@ class MainViewController: UIViewController {
                 self.present(alert, animated: true)
             }
         }.store(in: &cancellables)
+        
     }
     
     private func layout() {

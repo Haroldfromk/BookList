@@ -46,7 +46,7 @@ extension MainViewController {
         collectionSnapshot?.deleteAllItems()
         collectionSnapshot?.appendSections([.recent])
         collectionSnapshot?.appendItems(recentVM.recentDocument)
-        
+
         collectionDatasource?.apply(collectionSnapshot!, animatingDifferences: true)
     }
     

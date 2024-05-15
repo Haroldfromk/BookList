@@ -27,6 +27,8 @@ class SearchVM {
         return numberSubject.eraseToAnyPublisher()
     }
     
+    let networkManager = NetworkManager()
+    
     
     func transform(input: Input) {
         Publishers.CombineLatest(input.searchPublisher, input.numberPublisher)
@@ -40,7 +42,9 @@ class SearchVM {
             .eraseToAnyPublisher()
             .sink { [weak self] (value, page) in
                 guard !value.isEmpty else { return } // value가 빈 문자열인 경우 fetchTotalRequest 호출하지 않음
-                NetworkManager.shared.fetchTotalRequest(queryValue: value, page: page)
+                
+                // 의존성주입⭐️
+                self?.networkManager.fetchTotalRequest(queryValue: value, page: page)
                     .sink { completion in
                         switch completion {
                         case .finished:

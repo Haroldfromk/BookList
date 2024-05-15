@@ -10,11 +10,6 @@ import Combine
 
 class NetworkManager {
     
-    static let shared = NetworkManager()
-    
-    private init () {}
-    
-    let searchVM = SearchVM()
     
     private var cancellables = Set<AnyCancellable>()
     

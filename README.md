@@ -89,6 +89,24 @@
    </pre>
 </details> 
 
+<details>
+   <summary>24.05.13</summary>
+   <pre>● 의존성 주입 (Network, Coredata Manager Singleton Pattern 제외)
+   </pre>
+</details> 
+
+<details>
+   <summary>24.05.14</summary>
+   <pre>● AlertController 추가
+   </pre>
+</details> 
+
+<details>
+   <summary>24.05.15</summary>
+   <pre>● 
+   </pre>
+</details> 
+
 ## Demo
 <p float="left">
 <img src="https://github.com/Haroldfromk/BookList/assets/97341336/8be13234-e646-4c10-992b-0c6af85ac713" width="200" height="430">
@@ -181,6 +199,11 @@ Book
 │   │   ├── HeaderView
 │   │   ├── BodyTableView
 │   └── └── ButtonView
+│
+├── ViewModel
+│   ├── SearchVM
+│   ├── RecentVM
+│   └── WishVM
 │
 ├── Controller
 │   ├── MainViewController

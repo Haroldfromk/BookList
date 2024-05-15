@@ -29,6 +29,7 @@ class WishlistViewController: UIViewController {
     private var cancellables = Set<AnyCancellable>()
     
     let wishVM = WishVM()
+    let alertManager = AlertController()
     var wishTableDatasource: UITableViewDiffableDataSource<DiffableSectionModel, WishListModel>?
     var snapshot: NSDiffableDataSourceSnapshot<DiffableSectionModel, WishListModel>?
     
@@ -38,31 +39,26 @@ class WishlistViewController: UIViewController {
         
         layout()
         configureDiffableDataSource()
-        //setUp()
+        setUp()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        wishVM.getWholeDocument()
-        wishVM.$wishDocument
-            .receive(on: DispatchQueue.main)
-            .sink { [unowned self] _ in
-                configureSnapshot()
-            }.store(in: &cancellables)
+        bind()
     }
     
     private func bind () {
         wishVM.getWholeDocument()
         wishVM.$wishDocument
             .receive(on: DispatchQueue.main)
-            .sink { [unowned self] _ in
-                configureSnapshot()
+            .sink { [weak self] _ in
+                self?.configureSnapshot()
             }.store(in: &cancellables)
         
-        CoredataManager.shared.routerSubject
-            .receive(on: DispatchQueue.main)
-            .sink { alert in
-            switch alert {
+        
+        
+        wishVM.routerSubject.sink { router in
+            switch router {
             case .alert(let title, let message):
                 let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "확인", style: .default))
